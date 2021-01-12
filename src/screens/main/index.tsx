@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Dimensions, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import Floating, { FloatingRef } from '../floating'
 import Map from '../map'
 
 const style = StyleSheet.create({
   main: {
     width: '100%',
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height,
+    position: 'relative'
   },
   header: {
     width: '100%',
-    height: 40,
+    height: 50,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -24,6 +26,8 @@ const style = StyleSheet.create({
 })
 
 const Main = () => {
+  const floatingRef = useRef<FloatingRef>(null)
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -31,7 +35,8 @@ const Main = () => {
           <View style={style.header}>
             <Text style={style.headerText}>Dốc Đại Học</Text>
           </View>
-          <Map />
+          <Map floatingRef={floatingRef} />
+          <Floating ref={floatingRef} />
         </View>
       </ScrollView>
     </SafeAreaView>
