@@ -1,6 +1,6 @@
-import React, { FunctionComponent, RefObject, useEffect, useReducer } from 'react'
+import React, { FunctionComponent, useEffect, useReducer } from 'react'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import MeAnnotation from './meAnnotation'
 import { reducer } from '../../../library/utils'
 import mapSetting from './mapSetting.json'
@@ -8,23 +8,6 @@ import MapDraw from './mapDraw'
 import GeoJSON from './data/index.json'
 
 MapboxGL.setAccessToken('pk.eyJ1Ijoidm9odXVodXkwMTAzMTk5OSIsImEiOiJja2pvaDB3YmowZGd0MnpsMWx4ejBtcnpzIn0.nKEnGnYEi12fqlyvscYxhw')
-
-const styles = StyleSheet.create({
-  container: {
-    // height: Dimensions.get('window').height - 36,
-    width: '100%'
-  },
-  map: {
-    width: '100%',
-    height: '100%'
-  },
-  makerUser: {
-    width: 8,
-    height: 8,
-    backgroundColor: 'blue',
-    borderRadius: 50
-  }
-})
 
 let isFirstSaveCamera = false
 const cameraMaxBounds: {ne: [number, number]; sw: [number, number]} | any = mapSetting.maxBounds
@@ -51,39 +34,50 @@ const Map: FunctionComponent<any> = (props) => {
   }, [props?.route?.params?.coordinate])
 
   return (
-    <View style={styles.container}>
-      <MapboxGL.MapView
-        style={styles.map}
-        styleURL={MapboxGL.StyleURL.Light}
-        rotateEnabled
-        zoomEnabled
-        scrollEnabled
-        logoEnabled={false}
-        attributionEnabled={false}
-      >
-        <MapboxGL.Camera
-          ref={c => {
-            if (!isFirstSaveCamera) {
-              setState({ camera: c })
-              isFirstSaveCamera = true
-            }
-          }}
-          zoomLevel={17}
-          maxZoomLevel={18}
-          minZoomLevel={17}
-          maxBounds={cameraMaxBounds}
-          animationMode='flyTo'
-          followUserMode='normal'
-        />
-        <MeAnnotation camera={state.camera} />
-        <MapDraw
-          data={GeoJSON}
-          modalBottomRef={props.modalBottomRef}
-          {...props}
-        />
-      </MapboxGL.MapView>
-    </View>
+    <MapboxGL.MapView
+      style={styles.map}
+      styleURL={MapboxGL.StyleURL.Light}
+      rotateEnabled
+      zoomEnabled
+      scrollEnabled
+      logoEnabled={false}
+      attributionEnabled={false}
+    >
+      <MapboxGL.Camera
+        ref={c => {
+          if (!isFirstSaveCamera) {
+            setState({ camera: c })
+            isFirstSaveCamera = true
+          }
+        }}
+        zoomLevel={17}
+        // maxZoomLevel={18}
+        // minZoomLevel={17}
+        maxBounds={cameraMaxBounds}
+        animationMode='flyTo'
+        followUserMode='normal'
+      />
+      <MeAnnotation camera={state.camera} />
+      <MapDraw
+        data={GeoJSON}
+        modalBottomRef={props.modalBottomRef}
+        {...props}
+      />
+    </MapboxGL.MapView>
   )
 }
+
+const styles = StyleSheet.create({
+  map: {
+    width: '100%',
+    height: '100%'
+  },
+  makerUser: {
+    width: 8,
+    height: 8,
+    backgroundColor: 'blue',
+    borderRadius: 50
+  }
+})
 
 export default Map

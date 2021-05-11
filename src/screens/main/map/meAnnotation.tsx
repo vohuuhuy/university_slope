@@ -5,6 +5,7 @@ import { PermissionsAndroid, StyleSheet, View } from 'react-native'
 import { reducer } from '../../../library/utils'
 import mapSetting from './mapSetting.json'
 import { Toast } from 'native-base'
+import { getLocation } from 'graphql'
 
 const styles = StyleSheet.create({
   makerUser: {
@@ -39,8 +40,9 @@ const MeAnnotation: FunctionComponent<any> = (props) => {
     )
       .then(granted => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          geolocation.setRNConfiguration({ authorizationLevel: 'always', skipPermissionRequests: true })
-          idWatchPosition.current = geolocation.watchPosition(({ coords: { latitude, longitude } }) => {
+          geolocation.setRNConfiguration({ authorizationLevel: 'always', skipPermissionRequests: false })
+          geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+            console.log({ latitude, longitude })
             const isInSide = longitude >= mapSetting.maxBounds.sw[0] && longitude <= mapSetting.maxBounds.ne[0]
               && latitude >= mapSetting.maxBounds.sw[1] && latitude <= mapSetting.maxBounds.ne[1]
             setState({ latitude, longitude, isInSide })

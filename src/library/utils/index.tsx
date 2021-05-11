@@ -1,4 +1,4 @@
-import { Toast } from "native-base";
+import { Toast } from 'native-base'
 
 export const reducer = (currentState: any, newState: any): any => ({
   ...currentState,

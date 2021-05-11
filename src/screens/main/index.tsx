@@ -1,15 +1,25 @@
-import React, { useRef } from 'react'
-import Map from './map'
+import React, { useLayoutEffect, useRef } from 'react'
+import Loading from '../../components/loading'
 
-const Main = (props: any) => {
+const Map = React.lazy(() => import('./map'))
+
+const HomeScreen = (props: any) => {
   const modalBottomRef: any = useRef()
 
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      title: 'Dốc Đại Học'
+    })
+  }, [])
+
   return (
-    <Map
-      {...props}
-      modalBottomRef={modalBottomRef}
-    />
+    <React.Suspense fallback={<Loading />}>
+      <Map
+        {...props}
+        modalBottomRef={modalBottomRef}
+      />
+    </React.Suspense>
   )
 }
 
-export default Main
+export default HomeScreen
