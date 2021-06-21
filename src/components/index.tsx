@@ -1,5 +1,6 @@
 import HeaderTitle from './HeaderTitle'
 import Loading from './Loading'
+import Map from './Map'
 import {
   LocationIcon
 } from './Icons'
@@ -7,5 +8,6 @@ import {
 export {
   HeaderTitle,
   Loading,
-  LocationIcon
+  Map,
+  LocationIcon,
 }

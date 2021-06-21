@@ -7,12 +7,17 @@ const HeaderTitleContent = styled.View`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 80px;
+  height: 60px;
 `
 
-const Logo = styled.Image`
+export const Logo = styled.Image`
   width: 50px;
   height: 50px;
+`
+
+export const Logo75 = styled.Image`
+  width: 75px;
+  height: 75px;
 `
 
 const RigthContent = styled.View`
@@ -30,7 +35,7 @@ const HeaderTitle = (props: any) => {
   } = props
   return (
     <HeaderTitleContent>
-      <Logo source={require('../../assets/NTULogo.png')} />
+      <Logo source={require('../../assets/NTULogo50.png')} />
       <RigthContent>
         {rightContent}
       </RigthContent>

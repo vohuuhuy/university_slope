@@ -1,10 +1,8 @@
-import React, { useLayoutEffect, useRef } from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import React, { useLayoutEffect } from 'react'
+import { TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
-import { HeaderTitle, Loading, LocationIcon } from '../../components'
+import { HeaderTitle, LocationIcon, Map } from '../../components'
 import { defaultNavigationOptions } from '../../utils'
-
-const Map = React.lazy(() => import('./map'))
 
 const SearchButtonContent = styled.View`
   width: 100%;
@@ -25,8 +23,6 @@ const SearchButtonText = styled.Text`
 `
 
 const Home = (props: any) => {
-  const modalBottomRef: any = useRef()
-
   useLayoutEffect(() => {
     props.navigation.setOptions({
       ...defaultNavigationOptions,
@@ -48,17 +44,13 @@ const Home = (props: any) => {
             )}
           />
         )
-      }
+      },
+      headerLeft: null
     })
   }, [])
 
   return (
-    <React.Suspense fallback={<Loading />}>
-      <Map
-        {...props}
-        modalBottomRef={modalBottomRef}
-      />
-    </React.Suspense>
+    <Map {...props} />
   )
 }
 

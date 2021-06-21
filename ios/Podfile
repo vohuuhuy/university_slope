@@ -10,6 +10,8 @@ target 'university_slope' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'RealmJS', :path => '../node_modules/realm'
+
   target 'university_slopeTests' do
     inherit! :complete
     # Pods for testing

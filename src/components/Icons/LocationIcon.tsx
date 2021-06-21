@@ -1,5 +1,5 @@
-import { View } from 'native-base'
 import React from 'react'
+import { View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
 const LocationICon = ({ stroke = '', size = 's', style = {} }) => {
