@@ -48,4 +48,8 @@ const Client = new GraphQLClient({
   }
 })
 
+export const getMedia = (names: string[]) => {
+  return names.map(name => ({ uri: `http://ntumap.tk/media/${name}` })).concat(require('../../assets/image-not-found.png'))
+}
+
 export default Client

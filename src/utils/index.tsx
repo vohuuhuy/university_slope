@@ -51,13 +51,7 @@ export const defaultNavigationOptions = {
   headerStatusBarHeight: 0
 }
 
-export const errorToast = (error: string) => {
-  const errorMap: {[error: string]: string} = {
-    'Network Error': 'Không thể kết nối với máy chủ',
-    'timeout of 5000ms exceeded': 'Không thể kết nối với máy chủ'
-  }
-
-  const message: string = errorMap[error] || 'Lỗi máy chủ'
+export const errorMessageToast = (message: string) => {
   Toast.show(message, {
     position: Toast.positions.BOTTOM,
     duration: 5000,
@@ -67,5 +61,16 @@ export const errorToast = (error: string) => {
     shadow: true,
     animation: true,
     hideOnPress: true
-})
+  })
+}
+
+export const errorToast = (error: string) => {
+  const errorMap: {[error: string]: string} = {
+    'Network Error': 'Không thể kết nối với máy chủ',
+    'timeout of 5000ms exceeded': 'Không thể kết nối với máy chủ',
+    'Not connect with path': ''
+  }
+
+  const message: string = errorMap[error] || 'Lỗi máy chủ'
+  errorMessageToast(message)
 }

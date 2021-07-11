@@ -9,12 +9,15 @@ const ComponentSchema = {
     images: 'string?[]',
     zooms: 'double?[]',
     titleZooms: 'double?[]',
+    type: 'string',
+    info: 'string',
 
     // json
     search: 'string',
     map: 'string',
     style: 'string',
-    childs: 'string'
+    childs: 'string',
+    wayIns: 'string'
   }
 }
 

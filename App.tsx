@@ -2,7 +2,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { RootSiblingParent } from 'react-native-root-siblings'
-import { Loading } from './src/components'
+import { ModalPortal } from 'react-native-modals'
 import Home from './src/screens/home'
 import VersionCheck from './src/screens/versionCheck'
 
@@ -10,7 +10,7 @@ const Stack = createStackNavigator()
 
 const App = () => {
   return (
-    <React.Suspense fallback={<Loading />}>
+    <>
       <RootSiblingParent>
         <NavigationContainer>
           <Stack.Navigator initialRouteName='VersionCheck'   mode='card'>
@@ -23,7 +23,8 @@ const App = () => {
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>
-    </React.Suspense>
+      <ModalPortal />
+    </>
   )
 }
 

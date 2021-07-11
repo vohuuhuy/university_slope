@@ -1,6 +1,8 @@
 import React, { useLayoutEffect } from 'react'
 import { TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
+import FindWay from '../../components/FindWay'
+import ComponentInfo from '../../components/ComponentInfo'
 import { HeaderTitle, LocationIcon, Map } from '../../components'
 import { defaultNavigationOptions } from '../../utils'
 
@@ -23,6 +25,14 @@ const SearchButtonText = styled.Text`
 `
 
 const Home = (props: any) => {
+  const mapRef = React.useRef<any>(null)
+  const findWayRef = React.useRef<any>(null)
+  const componentInfoRef = React.useRef<any>(null)
+
+  const findClick = () => {
+    findWayRef.current?.open()
+  }
+
   useLayoutEffect(() => {
     props.navigation.setOptions({
       ...defaultNavigationOptions,
@@ -32,7 +42,7 @@ const Home = (props: any) => {
             {...props}
             rightContent={(
               <TouchableWithoutFeedback
-                onPress={() => console.log(+new Date())}
+                onPress={findClick}
               >
                 <SearchButtonContent>
                   <LocationIcon size='s' stroke='#da251b' style={{ marginRight: 3 }} />
@@ -50,7 +60,20 @@ const Home = (props: any) => {
   }, [])
 
   return (
-    <Map {...props} />
+    <>
+      <Map
+        {...props}
+        ref={mapRef}
+        componentInfoRef={componentInfoRef}
+      />
+      <FindWay
+        ref={findWayRef}
+        mapRef={mapRef}
+      />
+      <ComponentInfo
+        ref={componentInfoRef}
+      />
+    </>
   )
 }
 

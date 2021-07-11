@@ -5,7 +5,7 @@ import Client from '../../tools/client'
 import { Logo75 } from '../../components/HeaderTitle'
 import { errorToast, reducer } from '../../utils'
 import { APP_VERSION, REALM_VERSION } from '../../constants'
-import { ComponentSchema, SettingSchema } from '../../tools/realm'
+import { Schemas } from '../../tools/realm'
 
 const VersionCheckContainer = styled.View`
   width: 100%;
@@ -31,7 +31,7 @@ const VersionCheck = (props: any) => {
 
   const checkAndUpdate = async () => {
     const realm = await Realm.open({
-      schema: [ComponentSchema, SettingSchema],
+      schema: Schemas,
       schemaVersion: REALM_VERSION,
       migration: (olRealm, newRealm) => {
         console.log(olRealm.schemaVersion)
@@ -39,7 +39,7 @@ const VersionCheck = (props: any) => {
       }
     })
 
-    const getSettingComponents = async () => {
+    const getSetData = async () => {
       try {
         const { data } = await Client.query({
           query: `{
@@ -64,13 +64,20 @@ const VersionCheck = (props: any) => {
                 _id
                 coordinate
               }
+              wayIns
+              type
+              info
+            }
+            paths {
+              _id
+              coordinates
             }
           }`,
           variables: {}
         })
 
         if (data?.data?.components?.length) {
-          const { components: serverComponents } = data?.data
+          const { components: serverComponents } = data.data
           const components = realm.objects('Component')
 
           realm.write(() => {
@@ -86,7 +93,23 @@ const VersionCheck = (props: any) => {
               search: JSON.stringify(serverComponent.search) || '',
               map: JSON.stringify(serverComponent.map) || '',
               style: JSON.stringify(serverComponent.style) || '',
-              childs: JSON.stringify(serverComponent.childs) || ''
+              childs: JSON.stringify(serverComponent.childs) || '',
+              wayIns: JSON.stringify(serverComponent.wayIns) || '',
+              type: serverComponent.type || '',
+              info: serverComponent.info || ''
+            }))
+          })
+        }
+
+        if (data?.data?.paths?.length) {
+          const { paths: serverPaths } = data.data
+          const paths = realm.objects('Path')
+
+          realm.write(() => {
+            realm.delete(paths)
+            serverPaths.forEach((serverPath: any) => realm.create('Path', {
+              _id: serverPath._id,
+              coordinates: JSON.stringify(serverPath.coordinates || [])
             }))
           })
         }
@@ -140,7 +163,7 @@ const VersionCheck = (props: any) => {
         }
 
         if (!diffAppVerSion && diffDataVersion) {
-          await getSettingComponents()
+          await getSetData()
           realm.write(() => {
             const defaultSetting: any = defaultSettings[0]
             defaultSetting.dataVersion = serverSetting.dataVersion
@@ -151,11 +174,11 @@ const VersionCheck = (props: any) => {
       } else {
         // Máy chủ không có setting
       }
-      realm.close()
     } catch (error) {
       errorToast(error.message)
-      realm.close()
     }
+
+    realm.close()
 
     setState({ success: true })
   }
